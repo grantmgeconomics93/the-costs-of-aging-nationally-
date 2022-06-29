@@ -1,0 +1,142 @@
+---
+title: "Median Age Vs. Healthcare Expense  Across Countries 2019 Comparative Analysis "
+author: "Grant Gealy"
+output:
+  github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+health expenditure  from world bank
+median age from kaggle via UN 
+gdp per capita data from kaggle
+ This project will focus on the relationship between the age of a society and other economic factors in order to better understand the economics of specifically how income level and average age influence factors such as gdp growth and government spending. Note (age data is from 2020 due to lack of data for every year )
+```{r}
+#load library 
+#install.packages("reshape2")
+library(tidyverse)
+library(reshape2)
+library(colorspace)
+
+
+```
+ 
+```{r}
+#load data 
+age= read.csv("data/MedianAge.csv")%>% melt()%>%rename(year = variable )%>%rename(age =value)%>%rename(country = Country)
+#get rid of x in the year col
+age$year= as.numeric(substr(age$year,2,5))
+# pick to analyze 
+nage=age%>%filter(year==2020) 
+head(age)
+```
+```{r}
+##load economic freedom data 
+fre = read.csv("data/economic_freedom_index2019_data.csv")%>%rename(country = Country.Name)
+fre$WEBNAME= NULL
+fre
+#take out names to make all data numeric then put the names back in 
+numfre=sapply(fre[,-c(2,3)], function(x) as.numeric(gsub(
+        "$","",x,fixed=TRUE))) 
+frename=cbind(fre[,2:3],numfre) 
+#check data type for every col
+sapply(fre,class) 
+head(fre)
+```
+```{r}
+##load health data 
+health = read.csv("data/health.csv")%>%select(-c(Country.Code,Indicator.Name, Indicator.Code))%>%rename(country =ï..Country.Name)%>%melt(id.vars= "country")%>%rename(year = variable)%>%rename(hexpenspergdp =value)%>%na.omit()
+#get rid of x in the year col 
+health$year= as.numeric(substr(health$year,2,5)) 
+head(health)
+#get the values just for 2020  
+healthyear=health[health$year==2019,]
+
+#health$var = as.numeric(gsub("([0-9]+).*$", "\\1", health$var))
+#health =sapply(health,function(x) as.numeric(gsub("([0-9]+).*$", "\\1", x)))
+
+```
+```{r}
+#make one data set From the separate data sets 
+
+data=merge(frename,healthyear,"country",all.x = TRUE)
+fulldata=merge(data,nage,"country",all.x = TRUE)%>%drop_na(c(age,hexpenspergdp))
+```
+start analysis exploratory
+```{r}
+#we found the summary statistics for age an, health expenses 
+#and gdp growth rate 
+fulldata%>%select(age,hexpenspergdp,GDP.Growth.Rate....
+                  )%>%summary() 
+#make histograms for variable of interest 
+sapply(fulldata%>%select(age,hexpenspergdp,GDP.Growth.Rate....
+                  ),hist) 
+#find cor of variables of interest save it to a variable so we 
+#can graph it 
+test=fulldata%>%select(age,hexpenspergdp,GDP.Growth.Rate.... )%>%na.omit()%>%cor()%>%as.data.frame()
+test=test%>%mutate(variable =row.names(test))%>%pivot_longer(cols = 0:3,names_to= "var2",values_to = "cor")
+
+```
+```{r}
+selected=fulldata[fulldata$country=="Japan",]
+#make a graph plotting age and health expenses/gdp to illustrate the relationship between the age of a society and the amount they investorsinvest in Healthcare 
+ggplot(fulldata,aes(age,hexpenspergdp))+geom_point()+geom_smooth(method = lm)+geom_text(data = selected,mapping=aes(x=age,y=hexpenspergdp,label=country ),color="red")
+
+```
+
+
+```{r}
+
+
+#make a graph plotting government integrity and health expenses I did this to show how corruption in poorer countries might exaggerate the health expenses actually going towards the people
+ggplot(fulldata,aes(fulldata$Government.Integrity,hexpenspergdp))+geom_point(aes(size=GDP..Billions..PPP.,color=Region))+geom_smooth(method=lm)+labs(title = "health care spending vs government integrity 2019",y="Healthcare spending",x="government integrity ",size= "gdp in billions" ,color= "Region")+theme_bw()#+geom_text(data = selected,mapping=aes(x=Government.Integrity,y=hexpenspergdp,label=country ))
+
+
+
+  #geom_text(label= fulldata$country)
+```
+
+
+```{r}
+#make a graph showing the cor 
+ggplot(test,aes(y=var2,x= variable, fill =cor))+geom_tile()+geom_text(aes(label= round(cor,4)), color ="blue ")+labs(title ="cor title ",y="y",x="x")+theme(legend.position = "none")+scale_fill_continuous_sequential(palette="red")
+```
+```{r}
+ggplot(fulldata,aes(age,Business.Freedom))+geom_point()+geom_smooth(method="lm")+labs(title = "age vs. Business freedom",x="age",y=" Business freedom ")
+```
+
+```{r}
+
+agegdp=lm(fulldata$hexpenspergdp~age,data = fulldata)
+summary(agegdp)
+agegdp$coefficients
+```
+
+
+```{r}
+usa=which(fulldata$country=="United States")
+agegdp$residuals[usa]
+
+```
+
+
+```{r}
+#as a society ages they spend more on health 
+
+#can we also do the growth rate 
+#as yes that's what I am thinking 
+
+```
+```{r}
+
+```
+
+
+
+ 
+ 
+ 
+ 
+ |
+
