@@ -35,7 +35,7 @@ head(age)
 ##load economic freedom data 
 fre = read.csv("data/economic_freedom_index2019_data.csv")%>%rename(country = Country.Name)
 fre$WEBNAME= NULL
-fre
+
 #take out names to make all data numeric then put the names back in 
 numfre=sapply(fre[,-c(2,3)], function(x) as.numeric(gsub(
         "$","",x,fixed=TRUE))) 
