@@ -93,6 +93,7 @@ head(age)
 fre = read.csv("data/economic_freedom_index2019_data.csv")%>%rename(country = Country.Name)
 fre$WEBNAME= NULL
 
+
 #take out names to make all data numeric then put the names back in 
 numfre=sapply(fre[,-c(2,3)], function(x) as.numeric(gsub(
         "$","",x,fixed=TRUE))) 
@@ -200,72 +201,8 @@ sapply(fre,class)
     ##                 "character"
 
 ``` r
-head(fre)
+##head(fre)
 ```
-
-    ##   CountryID     country                       Region World.Rank Region.Rank
-    ## 1         1 Afghanistan                 Asia-Pacific        152          39
-    ## 2         2     Albania                       Europe         52          27
-    ## 3         3     Algeria Middle East and North Africa        171          14
-    ## 4         4      Angola           Sub-Saharan Africa        156          33
-    ## 5         5   Argentina                     Americas        148          26
-    ## 6         6     Armenia                       Europe         47          24
-    ##   X2019.Score Property.Rights Judical.Effectiveness Government.Integrity
-    ## 1        51.5            19.6                  29.6                 25.2
-    ## 2        66.5            54.8                  30.6                 40.4
-    ## 3        46.2            31.6                  36.2                 28.9
-    ## 4        50.6            35.9                  26.6                 20.5
-    ## 5        52.2            47.8                  44.5                 33.5
-    ## 6        67.7            57.2                  46.3                 38.6
-    ##   Tax.Burden Gov.t.Spending Fiscal.Health Business.Freedom Labor.Freedom
-    ## 1       91.7           80.3          99.3             49.2          60.4
-    ## 2       86.3           73.9          80.6             69.3          52.7
-    ## 3       76.4           48.7          18.7             61.6          49.9
-    ## 4       83.9           80.7          58.2             55.7          58.8
-    ## 5       69.3           49.5          33.0             56.4          46.9
-    ## 6       84.7           79.0          53.0             78.3          71.4
-    ##   Monetary.Freedom Trade.Freedom Investment.Freedom Financial.Freedom
-    ## 1             76.7          66.0                 10                10
-    ## 2             81.5          87.8                 70                70
-    ## 3             74.9          67.4                 30                30
-    ## 4             55.4          61.2                 30                40
-    ## 5             60.2          70.0                 55                60
-    ## 6             77.8          80.8                 75                70
-    ##   Tariff.Rate.... Income.Tax.Rate.... Corporate.Tax.Rate....
-    ## 1             7.0                20.0                   20.0
-    ## 2             1.1                23.0                   15.0
-    ## 3             8.8                35.0                   23.0
-    ## 4             9.4                17.0                   30.0
-    ## 5             7.5                35.0                   30.0
-    ## 6             2.1                26.0                   20.0
-    ##   Tax.Burden...of.GDP Gov.t.Expenditure...of.GDP     Country
-    ## 1                 5.0                       25.6 Afghanistan
-    ## 2                24.9                       29.5     Albania
-    ## 3                24.5                       41.4     Algeria
-    ## 4                20.6                       25.3      Angola
-    ## 5                30.8                       41.0   Argentina
-    ## 6                21.3                       26.4     Armenia
-    ##   Population..Millions. GDP..Billions..PPP. GDP.Growth.Rate....
-    ## 1                  35.5              $69.6                  2.5
-    ## 2                   2.9              $36.0                  3.9
-    ## 3                  41.5             $632.9                  2.0
-    ## 4                  28.2             $190.3                  0.7
-    ## 5                  44.1             $920.2                  2.9
-    ## 6                   3.0              $28.3                  7.5
-    ##   X5.Year.GDP.Growth.Rate.... GDP.per.Capita..PPP. Unemployment....
-    ## 1                         2.9               $1,958              8.8
-    ## 2                         2.5              $12,507             13.9
-    ## 3                         3.1              $15,237             10.0
-    ## 4                         2.9               $6,753              8.2
-    ## 5                         0.7              $20,876              8.7
-    ## 6                         3.6               $9,456             18.2
-    ##   Inflation.... FDI.Inflow..Millions. Public.Debt....of.GDP.
-    ## 1           5.0                  53.9                    7.3
-    ## 2           2.0               1,119.1                   71.2
-    ## 3           5.6               1,203.0                   25.8
-    ## 4          31.7              -2,254.5                   65.3
-    ## 5          25.7              11,857.0                   52.6
-    ## 6           0.9                 245.7                   53.5
 
 ``` r
 ##load health data 

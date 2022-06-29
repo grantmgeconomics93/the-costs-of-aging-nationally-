@@ -36,13 +36,14 @@ head(age)
 fre = read.csv("data/economic_freedom_index2019_data.csv")%>%rename(country = Country.Name)
 fre$WEBNAME= NULL
 
+
 #take out names to make all data numeric then put the names back in 
 numfre=sapply(fre[,-c(2,3)], function(x) as.numeric(gsub(
         "$","",x,fixed=TRUE))) 
 frename=cbind(fre[,2:3],numfre) 
 #check data type for every col
 sapply(fre,class) 
-head(fre)
+##head(fre)
 ```
 ```{r}
 ##load health data 
