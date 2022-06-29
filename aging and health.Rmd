@@ -23,7 +23,7 @@ library(colorspace)
 ```
  
 ```{r}
-#load data 
+#load  data 
 age= read.csv("data/MedianAge.csv")%>% melt()%>%rename(year = variable )%>%rename(age =value)%>%rename(country = Country)
 #get rid of x in the year col
 age$year= as.numeric(substr(age$year,2,5))
