@@ -12,7 +12,7 @@ health expenditure  from world bank
 median age from kaggle via UN 
 gdp per capita data from kaggle
  This project will focus on the relationship between the age of a society and other economic factors in order to better understand the economics of specifically how income level and average age influence factors such as gdp growth and government spending. Note (age data is from 2020 due to lack of data for every year )
-```{r}
+```{r,warning=FALSE,message=FALSE,results='hide'}
 #load library 
 #install.packages("reshape2")
 library(tidyverse)
@@ -22,39 +22,43 @@ library(colorspace)
 
 ```
  
-```{r}
-#load  data 
-age= read.csv("data/MedianAge.csv")%>% melt()%>%rename(year = variable )%>%rename(age =value)%>%rename(country = Country)
+```{r,warning=FALSE,message=FALSE}
+#load age data 
+age= read.csv("data/MedianAge.csv")%>% melt()%>%
+  rename(year = variable )%>%rename(age =value)%>%
+  rename(country = Country)
 #get rid of x in the year col
 age$year= as.numeric(substr(age$year,2,5))
 # pick to analyze 
 nage=age%>%filter(year==2020) 
 head(age)
 ```
-```{r}
+```{r,warning=FALSE,message=FALSE}
 ##load economic freedom data 
 fre = read.csv("data/economic_freedom_index2019_data.csv")%>%rename(country = Country.Name)
 fre$WEBNAME= NULL
+
 
 #take out names to make all data numeric then put the names back in 
 numfre=sapply(fre[,-c(2,3)], function(x) as.numeric(gsub(
         "$","",x,fixed=TRUE))) 
 frename=cbind(fre[,2:3],numfre) 
 #check data type for every col
-sapply(fre,class) 
-head(fre)
+asclass=sapply(fre,class) 
+head(asclass)
+
 ```
 ```{r}
 ##load health data 
-health = read.csv("data/health.csv")%>%select(-c(Country.Code,Indicator.Name, Indicator.Code))%>%rename(country =ï..Country.Name)%>%melt(id.vars= "country")%>%rename(year = variable)%>%rename(hexpenspergdp =value)%>%na.omit()
+health = read.csv("data/health.csv")%>%
+  select(-c(Country.Code,Indicator.Name, Indicator.Code))%>%rename(country =ï..Country.Name)%>%melt(id.vars= "country")%>%rename(year = variable)%>%rename(hexpenspergdp =value)%>%na.omit()
 #get rid of x in the year col 
 health$year= as.numeric(substr(health$year,2,5)) 
 head(health)
 #get the values just for 2020  
 healthyear=health[health$year==2019,]
 
-#health$var = as.numeric(gsub("([0-9]+).*$", "\\1", health$var))
-#health =sapply(health,function(x) as.numeric(gsub("([0-9]+).*$", "\\1", x)))
+
 
 ```
 ```{r}
@@ -80,8 +84,11 @@ test=test%>%mutate(variable =row.names(test))%>%pivot_longer(cols = 0:3,names_to
 ```
 ```{r}
 selected=fulldata[fulldata$country=="Japan",]
-#make a graph plotting age and health expenses/gdp to illustrate the relationship between the age of a society and the amount they investorsinvest in Healthcare 
-ggplot(fulldata,aes(age,hexpenspergdp))+geom_point()+geom_smooth(method = lm)+geom_text(data = selected,mapping=aes(x=age,y=hexpenspergdp,label=country ),color="red")
+healthyear=health[health$year==2019,]
+#make a graph plotting age and health expenses/gdp to illustrate the relationship between the age of a society 
+#and the amount they investorsinvest in Healthcare 
+ggplot(fulldata,aes(age,hexpenspergdp))+geom_point()+
+  geom_smooth(method = lm)+geom_text(data = selected,mapping=aes(x=age,y=hexpenspergdp,label=country ),color="red")
 
 ```
 
@@ -90,11 +97,7 @@ ggplot(fulldata,aes(age,hexpenspergdp))+geom_point()+geom_smooth(method = lm)+ge
 
 
 #make a graph plotting government integrity and health expenses I did this to show how corruption in poorer countries might exaggerate the health expenses actually going towards the people
-ggplot(fulldata,aes(fulldata$Government.Integrity,hexpenspergdp))+geom_point(aes(size=GDP..Billions..PPP.,color=Region))+geom_smooth(method=lm)+labs(title = "health care spending vs government integrity 2019",y="Healthcare spending",x="government integrity ",size= "gdp in billions" ,color= "Region")+theme_bw()#+geom_text(data = selected,mapping=aes(x=Government.Integrity,y=hexpenspergdp,label=country ))
-
-
-
-  #geom_text(label= fulldata$country)
+ggplot(fulldata,aes(fulldata$Government.Integrity,hexpenspergdp))+geom_point(aes(size=GDP..Billions..PPP.,color=Region))+geom_smooth(method=lm)+labs(title = "health care spending vs government integrity 2019",y="Healthcare spending",x="government integrity ",size= "gdp in billions" ,color= "Region")+theme_bw()+geom_text(data = selected,mapping=aes(x=Government.Integrity,y=hexpenspergdp,label=country ))
 ```
 
 
@@ -107,7 +110,7 @@ ggplot(fulldata,aes(age,Business.Freedom))+geom_point()+geom_smooth(method="lm")
 ```
 
 ```{r}
-
+#ran a regression to show the relationship between Healthcare expenses and average I find that Healthcare expenses as a percentage of gdp goes up ~ .1419986 For every year older of population with a standard error of 0.02149%.Highlighting The importance of efficient Healthcare delivery in ageing Healthcare. 
 agegdp=lm(fulldata$hexpenspergdp~age,data = fulldata)
 summary(agegdp)
 agegdp$coefficients
@@ -117,6 +120,7 @@ agegdp$coefficients
 ```{r}
 usa=which(fulldata$country=="United States")
 agegdp$residuals[usa]
+
 
 ```
 
