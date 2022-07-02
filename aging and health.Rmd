@@ -35,7 +35,8 @@ head(age)
 ```
 ```{r,warning=FALSE,message=FALSE}
 ##load economic freedom data 
-fre = read.csv("data/economic_freedom_index2019_data.csv")%>%rename(country = Country.Name)
+fre = read.csv("data/economic_freedom_index2019_data.csv")%>%
+  rename(country = Country.Name)
 fre$WEBNAME= NULL
 
 
@@ -44,14 +45,10 @@ numfre=sapply(fre[,-c(2,3)], function(x) as.numeric(gsub(
         "$","",x,fixed=TRUE))) 
 frename=cbind(fre[,2:3],numfre) 
 #check data type for every col
-<<<<<<< HEAD
+ 
 asclass=sapply(fre,class) 
 head(asclass)
 
-=======
-sapply(fre,class) 
-##head(fre)
->>>>>>> 8884743bd1f546c76cbb462f1a7d543a1d75d049
 ```
 ```{r}
 ##load health data 
