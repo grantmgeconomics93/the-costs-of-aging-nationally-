@@ -54,8 +54,49 @@ asclass=sapply(fre,class)
 head(asclass)
 ```
 
+<<<<<<< HEAD
     ##   CountryID     country      Region  World.Rank Region.Rank X2019.Score 
     ##   "integer" "character" "character" "character" "character" "character"
+=======
+    ##                   CountryID                     country 
+    ##                   "integer"                 "character" 
+    ##                      Region                  World.Rank 
+    ##                 "character"                 "character" 
+    ##                 Region.Rank                 X2019.Score 
+    ##                 "character"                 "character" 
+    ##             Property.Rights       Judical.Effectiveness 
+    ##                 "character"                 "character" 
+    ##        Government.Integrity                  Tax.Burden 
+    ##                 "character"                 "character" 
+    ##              Gov.t.Spending               Fiscal.Health 
+    ##                 "character"                 "character" 
+    ##            Business.Freedom               Labor.Freedom 
+    ##                 "character"                 "character" 
+    ##            Monetary.Freedom               Trade.Freedom 
+    ##                 "character"                 "character" 
+    ##          Investment.Freedom           Financial.Freedom 
+    ##                 "character"                 "character" 
+    ##             Tariff.Rate....         Income.Tax.Rate.... 
+    ##                 "character"                 "character" 
+    ##      Corporate.Tax.Rate....         Tax.Burden...of.GDP 
+    ##                 "character"                 "character" 
+    ##  Gov.t.Expenditure...of.GDP                     Country 
+    ##                 "character"                 "character" 
+    ##       Population..Millions.         GDP..Billions..PPP. 
+    ##                 "character"                 "character" 
+    ##         GDP.Growth.Rate.... X5.Year.GDP.Growth.Rate.... 
+    ##                 "character"                 "character" 
+    ##        GDP.per.Capita..PPP.            Unemployment.... 
+    ##                 "character"                 "character" 
+    ##               Inflation....       FDI.Inflow..Millions. 
+    ##                 "character"                 "character" 
+    ##      Public.Debt....of.GDP. 
+    ##                 "character"
+
+``` r
+##head(fre)
+```
+>>>>>>> 8884743bd1f546c76cbb462f1a7d543a1d75d049
 
 ``` r
 ##load health data 
